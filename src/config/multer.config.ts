@@ -12,10 +12,14 @@ export const multerOptions = (folderUpload: string | null = null) => {
       diskStorage({
         destination: (req: any, file: any, done: any) => {
           const uploadPath = folderUpload;
-          if (!existsSync(uploadPath)) {
-            mkdirSync(uploadPath);
+          try {
+            if (!existsSync(uploadPath)) {
+              mkdirSync(uploadPath);
+            }
+            done(null, uploadPath);
+          } catch (error) {
+            done(error, uploadPath);
           }
-          done(null, uploadPath);
         },
         filename: (req: any, file: any, done: any) => {
           done(null, `${uuid()}${extname(file.originalname)}`);
