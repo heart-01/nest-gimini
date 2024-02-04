@@ -14,6 +14,7 @@ import { CreateChatLocationPromptDto } from './dto/create-chat-location-prompt.d
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { multerOptions } from '@config/multer.config';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateChatMenuExtractPromptDto } from './dto/create-chat-menu-extract-prompt.dto copy';
 
 @ApiTags('Prompt API')
 @Controller('prompt')
@@ -64,5 +65,13 @@ export class PromptController {
   @UseInterceptors(FileInterceptor('image', multerOptions()))
   chatLocationPrompt(@UploadedFile() image: Express.Multer.File) {
     return this.promptService.chatLocationPrompt(image);
+  }
+
+  @Post('menu-extract')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: CreateChatMenuExtractPromptDto })
+  @UseInterceptors(FileInterceptor('image', multerOptions()))
+  chatMenuExtractPrompt(@UploadedFile() image: Express.Multer.File) {
+    return this.promptService.chatMenuExtractPrompt(image);
   }
 }

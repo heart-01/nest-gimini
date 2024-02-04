@@ -106,7 +106,7 @@ export class PromptService {
     const prompt = `
     what is the location in this image ? just answer location.
     Example answer: Asok Montri Road in Bangkok, Thailand
-  `;
+    `;
     const imageBase64 = image.buffer.toString('base64');
     const imageMimeType = image.mimetype;
 
@@ -115,5 +115,31 @@ export class PromptService {
       imageBase64,
       imageMimeType,
     );
+  }
+
+  async chatMenuExtractPrompt(image: Express.Multer.File) {
+    const prompt = `
+    list menu in this receipt in this format
+      - menu 1
+      - menu 2
+    `;
+    const imageBase64 = image.buffer.toString('base64');
+    const imageMimeType = image.mimetype;
+
+    const result = await this.generativeAiService.generateContentWithImage(
+      prompt,
+      imageBase64,
+      imageMimeType,
+    );
+
+    const pattern = /-\s(.+?)(?=\n|$)/g;
+
+    const menus = [];
+    let match = null;
+    while ((match = pattern.exec(result)) !== null) {
+      menus.push(match[1]);
+    }
+
+    return menus;
   }
 }
