@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePromptDto } from './dto/create-prompt.dto';
+import { GenerativeAiService } from '../generative-ai/generative-ai.service';
 
 @Injectable()
 export class PromptService {
-  create(createPromptDto: CreatePromptDto) {
-    return 'This action adds a new prompt';
+  constructor(private readonly generativeAiService: GenerativeAiService) {}
+
+  async create(createPromptDto: CreatePromptDto) {
+    return this.generativeAiService.generateContent(createPromptDto.prompt);
   }
 }
