@@ -47,4 +47,20 @@ export class GenerativeAiService {
       },
     };
   }
+
+  async chatHistoryPrompt(prompt: string, history: InputContent[]) {
+    const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const chat = model.startChat({
+      history,
+    });
+
+    try {
+      const result = await chat.sendMessage(prompt);
+      const response = await result.response;
+      return response.text();
+    } catch (error) {
+      console.log('🚀 ~ PromptService ~ create ~ error:', error);
+      throw new HttpException('Failed to generate content', 500);
+    }
+  }
 }
