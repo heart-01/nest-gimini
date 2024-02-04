@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateChatPromptDto } from './dto/create-chat-prompt.dto';
 import { CreateChatPromptWithImageDto } from './dto/create-chat-prompt-with-image.dto';
+import { CreateChatHistoryPromptDto } from './dto/create-chat-history-prompt.dto';
 import { GenerativeAiService } from '../generative-ai/generative-ai.service';
 
 @Injectable()
@@ -23,5 +24,12 @@ export class PromptService {
       imageBase64,
       imageMimeType,
     );
+  }
+
+  async chatHistoryPrompt(
+    createChatHistoryPromptDto: CreateChatHistoryPromptDto,
+  ) {
+    const { prompt, history } = createChatHistoryPromptDto;
+    return this.generativeAiService.chatHistoryPrompt(prompt, history);
   }
 }

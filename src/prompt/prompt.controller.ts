@@ -8,6 +8,7 @@ import {
 import { PromptService } from './prompt.service';
 import { CreateChatPromptDto } from './dto/create-chat-prompt.dto';
 import { CreateChatPromptWithImageDto } from './dto/create-chat-prompt-with-image.dto';
+import { CreateChatHistoryPromptDto } from './dto/create-chat-history-prompt.dto';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { multerOptions } from '@config/multer.config';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -34,5 +35,10 @@ export class PromptController {
       createChatPromptWithImageDto,
       image,
     );
+  }
+
+  @Post('history')
+  chatHistoryPrompt(@Body() createChatHistoryPromptDto: CreateChatHistoryPromptDto) {
+    return this.promptService.chatHistoryPrompt(createChatHistoryPromptDto);
   }
 }
