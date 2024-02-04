@@ -10,6 +10,7 @@ import { CreateChatPromptDto } from './dto/create-chat-prompt.dto';
 import { CreateChatPromptWithImageDto } from './dto/create-chat-prompt-with-image.dto';
 import { CreateChatHistoryPromptDto } from './dto/create-chat-history-prompt.dto';
 import { CreateChatChoicePromptDto } from './dto/create-chat-choice-prompt.dto';
+import { CreateChatLocationPromptDto } from './dto/create-chat-location-prompt.dto';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { multerOptions } from '@config/multer.config';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -46,9 +47,7 @@ export class PromptController {
   }
 
   @Post('summary')
-  chatSummaryPrompt(
-    @Body() createChatPromptDto: CreateChatPromptDto,
-  ) {
+  chatSummaryPrompt(@Body() createChatPromptDto: CreateChatPromptDto) {
     return this.promptService.chatSummaryPrompt(createChatPromptDto);
   }
 
@@ -57,5 +56,13 @@ export class PromptController {
     @Body() createChatChoicePromptDto: CreateChatChoicePromptDto,
   ) {
     return this.promptService.chatChoicePrompt(createChatChoicePromptDto);
+  }
+
+  @Post('location')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: CreateChatLocationPromptDto })
+  @UseInterceptors(FileInterceptor('image', multerOptions()))
+  chatLocationPrompt(@UploadedFile() image: Express.Multer.File) {
+    return this.promptService.chatLocationPrompt(image);
   }
 }

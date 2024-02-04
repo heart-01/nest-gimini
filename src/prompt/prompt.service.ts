@@ -101,4 +101,19 @@ export class PromptService {
 
     return choices;
   }
+
+  async chatLocationPrompt(image: Express.Multer.File) {
+    const prompt = `
+    what is the location in this image ? just answer location.
+    Example answer: Asok Montri Road in Bangkok, Thailand
+  `;
+    const imageBase64 = image.buffer.toString('base64');
+    const imageMimeType = image.mimetype;
+
+    return this.generativeAiService.generateContentWithImage(
+      prompt,
+      imageBase64,
+      imageMimeType,
+    );
+  }
 }
