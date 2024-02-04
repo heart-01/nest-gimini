@@ -38,7 +38,16 @@ export class PromptController {
   }
 
   @Post('history')
-  chatHistoryPrompt(@Body() createChatHistoryPromptDto: CreateChatHistoryPromptDto) {
+  chatHistoryPrompt(
+    @Body() createChatHistoryPromptDto: CreateChatHistoryPromptDto,
+  ) {
     return this.promptService.chatHistoryPrompt(createChatHistoryPromptDto);
+  }
+
+  @Post('summary')
+  chatSummaryPrompt(
+    @Body() createChatPromptDto: CreateChatPromptDto,
+  ) {
+    return this.promptService.chatSummaryPrompt(createChatPromptDto);
   }
 }
